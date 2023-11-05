@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import pl.medrekkaszuba.exception.KafkaSendingMessageException;
+import pl.medrekkaszuba.model.Image;
 
 @Slf4j
 @Service
@@ -26,9 +27,8 @@ public class KafkaPublisherService {
     }
 
 
-    public void sendImageToProcess() {
-        //todo
-        //sendKafkaMessage(imagesToProcessTopic, null, null);
+    public void sendImageToProcess(Image imageToProcess) {
+       // todo
     }
 
     private void sendKafkaMessage(String topic, String key, String message) {

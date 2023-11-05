@@ -11,9 +11,9 @@ import org.springframework.kafka.annotation.EnableKafka;
 public class KafkaConfiguration {
 
     @Bean
-    public NewTopic imagesToProcessTopic(@Value("kafka.imagesToProcessTopic.name") String topicName,
-                                         @Value("kafka.imagesToProcessTopic.partitions") short partitions,
-                                         @Value("kafka.imagesToProcessTopic.replicationFactor") int replicationFactor) {
+    public NewTopic imagesToProcessTopic(@Value("${kafka.imagesToProcessTopic.name}") String topicName,
+                                         @Value("${kafka.imagesToProcessTopic.partitions}") int partitions,
+                                         @Value("${kafka.imagesToProcessTopic.replicationFactor}") int replicationFactor) {
 
         return prepareTopic(topicName, partitions, replicationFactor);
     }
