@@ -3,7 +3,7 @@ package pl.medrekkaszuba.model.api;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pl.medrekkaszuba.model.NewsItem;
+import pl.medrekkaszuba.model.NewsItemDto;
 
 import java.util.List;
 
@@ -12,5 +12,5 @@ import java.util.List;
 @NoArgsConstructor
 public class NewsResponse {
     private String status;
-    private List<NewsItem> news;
+    private List<NewsItemDto> news;
 }
