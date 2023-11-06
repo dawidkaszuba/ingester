@@ -1,12 +1,10 @@
 package pl.medrekkaszuba.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
 @Entity
 public class NewsItem {
@@ -21,8 +19,8 @@ public class NewsItem {
     private String url;
     @Column(columnDefinition = "TEXT")
     private String author;
-    @Column(columnDefinition = "TEXT")
-    private String image;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Image image;
     private String language;
     private String category;
     private String published;

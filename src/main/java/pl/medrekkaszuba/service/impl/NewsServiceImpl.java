@@ -3,7 +3,7 @@ package pl.medrekkaszuba.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.medrekkaszuba.dao.NewsDao;
-import pl.medrekkaszuba.model.Image;
+import pl.medrekkaszuba.model.ImageDto;
 import pl.medrekkaszuba.model.NewsItemDto;
 import pl.medrekkaszuba.model.api.LatestNewsRequest;
 import pl.medrekkaszuba.model.api.NewsResponse;
@@ -48,8 +48,8 @@ public class NewsServiceImpl implements NewsService {
     private void sendToKafka(List<NewsItemDto> news) {
         news.forEach(newsItem -> {
             if(newsItem.getImage() != null && newsItem.getNewsItemId() != null) {
-                Image image = new Image(newsItem.getImage(), newsItem.getNewsItemId());
-                kafkaPublisherService.sendImageToProcess(image);
+                ImageDto imageDto = new ImageDto(newsItem.getImage(), newsItem.getNewsItemId());
+                kafkaPublisherService.sendImageToProcess(imageDto);
             }
         });
     }
