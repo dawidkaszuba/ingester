@@ -1,29 +1,28 @@
 package pl.medrekkaszuba.model;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class NewsItem {
+@Setter
+@Getter
+public class NewsItemDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @JsonProperty("id")
     private String newsItemId;
     private String title;
-    @Column(columnDefinition = "TEXT")
     private String description;
     private String url;
-    @Column(columnDefinition = "TEXT")
     private String author;
-    @Column(columnDefinition = "TEXT")
     private String image;
     private String language;
-    private String category;
+    private List<String> category;
     private String published;
+
 }

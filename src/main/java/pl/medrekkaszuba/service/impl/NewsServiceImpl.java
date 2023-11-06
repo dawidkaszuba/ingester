@@ -2,12 +2,12 @@ package pl.medrekkaszuba.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import pl.medrekkaszuba.dao.NewsDao;
 import pl.medrekkaszuba.model.Image;
-import pl.medrekkaszuba.model.NewsItem;
+import pl.medrekkaszuba.model.NewsItemDto;
 import pl.medrekkaszuba.model.api.LatestNewsRequest;
 import pl.medrekkaszuba.model.api.NewsResponse;
 import pl.medrekkaszuba.publisher.KafkaPublisherService;
-import pl.medrekkaszuba.repository.NewsRepository;
 import pl.medrekkaszuba.service.NewsAPIClient;
 import pl.medrekkaszuba.service.NewsService;
 
@@ -20,14 +20,12 @@ public class NewsServiceImpl implements NewsService {
 
     private final NewsAPIClient newsApiClient;
     private final KafkaPublisherService kafkaPublisherService;
+    private final NewsDao newsDao;
 
-    private final NewsRepository newsRepository;
-    // sprawdzic czy nie lepiej tu powinien byc serowis uzywajacy repozytorium
-
-    public NewsServiceImpl(NewsAPIClient newsApiClient, KafkaPublisherService kafkaPublisherService, NewsRepository newsRepository) {
+    public NewsServiceImpl(NewsAPIClient newsApiClient, KafkaPublisherService kafkaPublisherService, NewsDao newsDao) {
         this.newsApiClient = newsApiClient;
         this.kafkaPublisherService = kafkaPublisherService;
-        this.newsRepository = newsRepository;
+        this.newsDao = newsDao;
     }
 
     @Override
@@ -41,13 +39,15 @@ public class NewsServiceImpl implements NewsService {
         }
     }
 
-    private void saveRetrievedData(List<NewsItem> news) {
-        news.forEach(newsRepository::save);
+    private void saveRetrievedData(List<NewsItemDto> news) {
+        news.forEach(newsItemDto ->
+                newsDao.saveAll(news));
+
     }
 
-    private void sendToKafka(List<NewsItem> news) {
+    private void sendToKafka(List<NewsItemDto> news) {
         news.forEach(newsItem -> {
-            if(newsItem.getImage() != null && newsItem.getDbId() != null) {
+            if(newsItem.getImage() != null && newsItem.getNewsItemId() != null) {
                 Image image = new Image(newsItem.getImage(), newsItem.getNewsItemId());
                 kafkaPublisherService.sendImageToProcess(image);
             }
