@@ -1,11 +1,21 @@
 package pl.medrekkaszuba.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Entity
 public class Image {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String sourceUrl;
     private String url;
     private String newsItemId;
+    @Enumerated(EnumType.STRING)
+    private ImageStatus status;
+
 }
