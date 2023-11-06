@@ -7,6 +7,7 @@ import pl.medrekkaszuba.model.ImageDto;
 import pl.medrekkaszuba.model.NewsItemDto;
 import pl.medrekkaszuba.model.api.LatestNewsRequest;
 import pl.medrekkaszuba.model.api.NewsResponse;
+import pl.medrekkaszuba.model.api.SearchNewsRequest;
 import pl.medrekkaszuba.publisher.KafkaPublisherService;
 import pl.medrekkaszuba.service.NewsAPIClient;
 import pl.medrekkaszuba.service.NewsService;
@@ -29,10 +30,18 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public void processNews(LatestNewsRequest request) {
+    public void getLatestNews(LatestNewsRequest request) {
+        NewsResponse response = newsApiClient.getNews(request);
+        processNews(response);
+    }
 
-        NewsResponse response = newsApiClient.getTweets(request);
+    @Override
+    public void searchNews(SearchNewsRequest request) {
+        NewsResponse response = newsApiClient.searchNews(request);
+        processNews(response);
+    }
 
+    private void processNews(NewsResponse response) {
         if (response != null && response.getNews() != null && !response.getNews().isEmpty()) {
             saveRetrievedData(response.getNews());
             sendToKafka(response.getNews());
@@ -42,7 +51,6 @@ public class NewsServiceImpl implements NewsService {
     private void saveRetrievedData(List<NewsItemDto> news) {
         news.forEach(newsItemDto ->
                 newsDao.saveAll(news));
-
     }
 
     private void sendToKafka(List<NewsItemDto> news) {

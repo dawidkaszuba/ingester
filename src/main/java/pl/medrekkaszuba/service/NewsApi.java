@@ -12,4 +12,11 @@ public interface NewsApi {
     @GetMapping("/v1/latest-news")
     NewsResponse getNews(@RequestParam("language") String language);
 
+    @GetMapping("/v1/search")
+    NewsResponse searchNews(@RequestParam("language") String language,
+                            @RequestParam("keywords") String keywords,
+                            @RequestParam("country") String country,
+                            @RequestParam("category") String category,
+                            @RequestParam("startDate") String startDate,
+                            @RequestParam("endDate") String endDate);
 }
