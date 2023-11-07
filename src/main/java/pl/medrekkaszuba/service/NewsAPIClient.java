@@ -7,6 +7,9 @@ import pl.medrekkaszuba.model.api.LatestNewsRequest;
 import pl.medrekkaszuba.model.api.NewsResponse;
 import pl.medrekkaszuba.model.api.SearchNewsRequest;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 
 @Slf4j
 @Component
@@ -21,7 +24,9 @@ public class NewsAPIClient {
 
     public NewsResponse getNews(LatestNewsRequest request) {
         try {
-            return newsApi.getNews(request.getLanguage());
+            Map<String, String> parameters = new LinkedHashMap<>();
+            parameters.put("language", request.getLanguage());
+            return newsApi.getNews(parameters);
         } catch (FeignException e) {
             log.error("[NewsAPIClient] An error has been occurred during GET request to News API: {}", e.request());
         }
@@ -30,9 +35,20 @@ public class NewsAPIClient {
 
     public NewsResponse searchNews(SearchNewsRequest request) {
         try {
-            return newsApi.searchNews(request.getLanguage(), request.getKeywords(), request.getCountry(), request.getCategory(), request.getStartDate(), request.getEndDate());
+            Map<String, String> parameters = new LinkedHashMap<>();
+            parameters.put("language", request.getLanguage());
+            parameters.put("keywords", request.getKeywords());
+            parameters.put("category", request.getCategory());
+            parameters.put("country", request.getCountry());
+            parameters.put("startDate", request.getStartDate().toString());
+            parameters.put("endDate", request.getEndDate().toString());
+            parameters.put("limit", request.getLimit().toString());
+            parameters.put("page_size", request.getPageSize().toString());
+            parameters.put("page_number", request.getPageNumber().toString());
+
+            return newsApi.searchNews(parameters);
         } catch (FeignException e) {
-            log.error("[NewsAPIClient] An error has been occurred during GET request to News API: {}", e.request());
+            log.error("[NewsAPIClient] An error has been occurred during GET request to News API: {}", e);
         }
         return null;
     }
