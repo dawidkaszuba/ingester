@@ -3,6 +3,7 @@ package pl.medrekkaszuba.controller;
 import org.springframework.web.bind.annotation.*;
 import pl.medrekkaszuba.model.api.LatestNewsRequest;
 import pl.medrekkaszuba.service.NewsService;
+import pl.medrekkaszuba.model.api.SearchNewsRequest;
 
 @RestController
 @RequestMapping("/api")
@@ -17,6 +18,11 @@ public class NewsController {
 
     @PostMapping("/latest-news")
     public void getNews(@RequestBody LatestNewsRequest request) {
-        newsService.processNews(request);
+        newsService.getLatestNews(request);
+    }
+
+    @PostMapping("/search-news")
+    public void searchNews(@RequestBody SearchNewsRequest request) {
+        newsService.searchNews(request);
     }
 }
