@@ -7,9 +7,8 @@ import pl.medrekkaszuba.model.ImageStatus;
 import pl.medrekkaszuba.model.NewsItem;
 import pl.medrekkaszuba.model.NewsItemDto;
 import pl.medrekkaszuba.repository.NewsRepository;
+import pl.medrekkaszuba.utils.ImageUtils;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 @Slf4j
@@ -42,7 +41,7 @@ public class NewsDao {
     }
 
     private Image prepareImage(String imageUrl, String newsItemId) {
-        if (imageUrl != null && isValidURL(imageUrl) && newsItemId != null) {
+        if (imageUrl != null && ImageUtils.isValidURL(imageUrl) && newsItemId != null) {
             Image image = new Image();
             image.setStatus(ImageStatus.TO_PROCESS);
             image.setSourceUrl(imageUrl);
@@ -52,14 +51,4 @@ public class NewsDao {
         return null;
     }
 
-
-    private boolean isValidURL(String urlString) {
-        try {
-            new URL(urlString);
-            return true;
-        } catch (MalformedURLException e) {
-            log.warn("[NewsDao] Provided URL: \"{}\" is not valid", urlString);
-            return false;
-        }
-    }
 }

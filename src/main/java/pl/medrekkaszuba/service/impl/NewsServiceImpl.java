@@ -11,6 +11,7 @@ import pl.medrekkaszuba.model.api.SearchNewsRequest;
 import pl.medrekkaszuba.publisher.KafkaPublisherService;
 import pl.medrekkaszuba.service.NewsAPIClient;
 import pl.medrekkaszuba.service.NewsService;
+import pl.medrekkaszuba.utils.ImageUtils;
 
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class NewsServiceImpl implements NewsService {
 
     private void sendToKafka(List<NewsItemDto> news) {
         news.forEach(newsItem -> {
-            if(newsItem.getImage() != null && newsItem.getNewsItemId() != null) {
+            if(newsItem.getImage() != null && newsItem.getNewsItemId() != null && ImageUtils.isValidURL(newsItem.getImage())) {
                 ImageDto imageDto = new ImageDto(newsItem.getImage(), newsItem.getNewsItemId());
                 kafkaPublisherService.sendImageToProcess(imageDto);
             }
