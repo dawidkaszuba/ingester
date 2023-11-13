@@ -8,6 +8,8 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
+import pl.medrekkaszuba.exception.KafkaConsumingMessageException;
+import pl.medrekkaszuba.model.ImageDto;
 import pl.medrekkaszuba.service.ProcessedImageService;
 
 @Slf4j
@@ -23,8 +25,14 @@ public class KafkaConsumer {
         this.processedImageService = processedImageService;
     }
 
-    @KafkaListener(topics = "processed-images", groupId = "group_id")
+    @KafkaListener(topics = "${kafka.processedImagesTopic.name}", groupId = "group_id")
     public void consumeProcessedImage(@Payload String message, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
-        //todo
+        try {
+            ImageDto imageDto = objectMapper.readValue(message, ImageDto.class);
+            processedImageService.saveProcessedImageData(imageDto);
+        } catch (Exception e) {
+            log.error("[KafkaConsumer] Error consuming message from Kafka topic {} : {}", topic, e.getStackTrace());
+            throw new KafkaConsumingMessageException("An error occurred while consuming message from Kafka", e);
+        }
     }
 }
