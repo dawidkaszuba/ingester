@@ -19,7 +19,7 @@ public class KafkaPublisherService {
 
 
     public KafkaPublisherService(KafkaTemplate<String, String> kafkaTemplate,
-                                 @Value("kafka.imagesToProcessTopic") String imagesToProcessTopic,
+                                 @Value("${kafka.imagesToProcessTopic.name}") String imagesToProcessTopic,
                                  ObjectMapper objectMapper) {
         this.kafkaTemplate = kafkaTemplate;
         this.imagesToProcessTopic = imagesToProcessTopic;
@@ -28,15 +28,15 @@ public class KafkaPublisherService {
 
 
     public void sendImageToProcess(ImageDto imageDtoToProcess) {
-       // todo
+       sendKafkaMessage(imagesToProcessTopic, imageDtoToProcess.getNewsItemId(), imageDtoToProcess);
     }
 
-    private void sendKafkaMessage(String topic, String key, String message) {
+    private void sendKafkaMessage(String topic, String key, ImageDto imageDto) {
         try {
-            String serializedMessage = objectMapper.writeValueAsString(message);
+            String serializedMessage = objectMapper.writeValueAsString(imageDto);
             kafkaTemplate.send(topic, key, serializedMessage).get();
         } catch (Exception e) {
-            log.error("[KafkaPublisherService] Error sending message to kafka", e);
+            log.error("[KafkaPublisherService] Error sending message to Kafka", e);
             throw new KafkaSendingMessageException("An error occurred while sending message to Kafka", e);
         }
     }
