@@ -33,6 +33,11 @@ kafka:
         name: imagesToProcessTopic
         partitions: 2
         replicationFactor: 2
+    processedImagesTopic:
+        name: processedImagesTopic
+        partitions: 2
+        replicationFactor: 1
+
 
 feign:
     client:
