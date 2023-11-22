@@ -1,0 +1,45 @@
+server:
+    port: ${SERVER_PORT}
+
+spring:
+    kafka:
+        bootstrap-servers: ${BOOTSTRAP_SERVERS}
+        consumer.groupId: ${KAFKA_CONSUMER_GROUP}
+
+    jpa:
+        hibernate:
+            ddl-auto: none
+        show-sql: false
+        generate-ddl: true
+        properties:
+            hibernate:
+                jdbc:
+                    time_zone: UTC
+    datasource:
+        url: ${DATASOURCE_URL}
+        username: ${DATASOURCE_USERNAME}
+        password: ${DATASOURCE_PASSWORD}
+        driver-class-name: com.mysql.cj.jdbc.Driver
+
+news:
+    api:
+        token: ${NEWS_API_TOKEN}
+        url: https://api.currentsapi.services
+
+kafka:
+    imagesToProcessTopic:
+        name: ${IMAGES_TO_PROCESS_TOPIC_NAME}
+        partitions: 2
+        replicationFactor: 1
+    processedImagesTopic:
+        name: ${PROCESSED_IMAGES_TOPIC_NAME}
+        partitions: 2
+        replicationFactor: 1
+
+feign:
+    client:
+        config:
+            default:
+                connectTimeout: 5000
+                readTimeout: 5000
+                url: https://api.currentsapi.services
