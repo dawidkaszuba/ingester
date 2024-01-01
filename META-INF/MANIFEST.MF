@@ -1,0 +1,1 @@
+Main-Class: pl.medrekkaszuba.ingester.IngesterApplication
