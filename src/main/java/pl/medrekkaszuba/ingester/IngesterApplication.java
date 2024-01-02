@@ -8,10 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"pl.medrekkaszuba", "pl.medrekkaszuba.repository"})
-@EnableFeignClients(basePackages = {"pl.medrekkaszuba.service"})
-@EnableJpaRepositories("pl.medrekkaszuba.repository")
-@EntityScan(basePackages = "pl.medrekkaszuba.model")
+@EnableFeignClients(basePackages = {"pl.medrekkaszuba.ingester.service"})
 public class IngesterApplication {
 
 	public static void main(String[] args) {
