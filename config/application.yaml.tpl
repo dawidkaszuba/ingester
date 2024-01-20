@@ -5,8 +5,6 @@ spring:
     kafka:
         bootstrap-servers: localhost:9092
         consumer.groupId: group
-        imagesToProcessTopic:
-            partitions: 2
 
     jpa:
         hibernate:

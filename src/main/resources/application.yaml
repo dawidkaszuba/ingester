@@ -1,5 +1,6 @@
 server:
     port: 8080
+
 spring:
     kafka:
         bootstrap-servers: ${BOOTSTRAP_SERVERS}
@@ -28,12 +29,8 @@ news:
 kafka:
     imagesToProcessTopic:
         name: ${IMAGES_TO_PROCESS_TOPIC_NAME}
-        partitions: 2
-        replicationFactor: 1
     processedImagesTopic:
         name: ${PROCESSED_IMAGES_TOPIC_NAME}
-        partitions: 2
-        replicationFactor: 1
 
 feign:
     client:
